@@ -11,5 +11,8 @@ public interface BranchDao extends JpaRepository<Branch, String> {
 	Branch findByMenuid(int menuid);
 
 	List<Branch> findBranchByMenuid(int menuid);
+	ArrayList<Branch> findBranchByMenuidAndCategory1(int menuid, int category1);
+	Branch findBranchBySidAndMenuid(int sid, int menuid);
+	
 
 }

@@ -12,7 +12,11 @@
                   <b>체크인을 해주세요</b>
                 </h1>
                 <p style="float:right;">
-                  <b-button style="width:100px; height: 30px; background-color: pink; border:0" v-b-modal.modalPopover>회원가입 QR코드</b-button>
+                  <b-button
+                    style="width:100px; height: 30px; background-color: pink; border:0"
+                    v-b-modal.modalPopover
+                    >회원가입 QR코드</b-button
+                  >
 
                   <b-modal id="modalPopover" ok-only size="sm">
                     <div
@@ -52,7 +56,7 @@
               <div class="mt-3 col-auto mx-1 card-block py-0 text-center radio">
                 <div class="flex-row">
                   <div class="col">
-                    <div class="pic">
+                    <div class="pic" @click="nonMember">
                       <img
                         src="~@/assets/img/rejected.png"
                         width="200"
@@ -81,13 +85,11 @@ export default {
 
   methods: {
     Member() {
-      axios
-        .get(baseURL + "/kiosk/recog")
-        .then((Response) => {})
-        .catch((Error) => {
-          console.log(Error);
-        });
+      this.$router.push("facecheck");
     },
+    nonMember(){
+      this.$router.push('qrcheck')
+    }
   },
 };
 </script>

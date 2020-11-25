@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.blog.model.user.User;
+import com.web.blog.model.user.Useradmin;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -33,6 +34,18 @@ public class JwtService{
 				//  .setExpiration(new Date(curTime + 3600000))
 				 .setIssuedAt(new Date(curTime))
 				 .claim(DATA_KEY, user)
+				 .signWith(SignatureAlgorithm.HS256, this.generateKey())
+				 .compact();
+	}
+	
+	//admin
+	public String createAdminLoginToken(Useradmin useradmin) {
+		long curTime = System.currentTimeMillis();
+		return  Jwts.builder()
+                 .setHeaderParam("typ", "JWT")
+				//  .setExpiration(new Date(curTime + 3600000))
+				 .setIssuedAt(new Date(curTime))
+				 .claim(DATA_KEY, useradmin)
 				 .signWith(SignatureAlgorithm.HS256, this.generateKey())
 				 .compact();
 	}
@@ -60,6 +73,21 @@ public class JwtService{
 			throw new JWTException("decodeing failed");
 		}
 		return objectMapper.convertValue(claims.getBody().get(DATA_KEY), User.class);
+        // return claims.getBody().get(DATA_KEY);
+	}
+	
+	//admin
+	public Useradmin getaUseradmin(String jwt) {
+		Jws<Claims> claims = null;
+		try {
+			claims = Jwts.parser()
+						 .setSigningKey(this.generateKey())
+						 .parseClaimsJws(jwt);
+		} catch (Exception e) {
+			LOGGER.debug(e.getMessage(), e);
+			throw new JWTException("decodeing failed");
+		}
+		return objectMapper.convertValue(claims.getBody().get(DATA_KEY), Useradmin.class);
         // return claims.getBody().get(DATA_KEY);
     }
 

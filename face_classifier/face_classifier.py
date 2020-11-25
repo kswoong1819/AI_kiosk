@@ -75,7 +75,7 @@ class FaceClassifier():
             aligned_image = face_alignment_dlib.get_aligned_face(self.predictor, face_image)
 
             filename = now.strftime('%Y%m%d_%H%M%S.%f')[:-3] + '.png'
-            pathname = os.path.join("C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier/train/" + args.capture, filename)
+            pathname = os.path.join( "/home/ubuntu/learningFile/train/" + args.capture, filename)
 
             tmp += 1
             cv2.imwrite(pathname, aligned_image)
@@ -89,48 +89,49 @@ if __name__ == '__main__':
     import os
 
     ap = argparse.ArgumentParser()
-    ap.add_argument("inputfile",
-                    help="video file to detect or '0' to detect from web cam")
-    ap.add_argument("-t", "--threshold", default=0.44, type=float,
-                    help="threshold of the similarity (default=0.44)")
-    ap.add_argument("-S", "--seconds", default=1, type=float,
-                    help="seconds between capture")
-    ap.add_argument("-s", "--stop", default=0, type=int,
-                    help="stop detecting after # seconds")
-    ap.add_argument("-k", "--skip", default=0, type=int,
-                    help="skip detecting for # seconds from the start")
-    ap.add_argument("-d", "--display", action='store_true',
-                    help="display the frame in real time")
-    ap.add_argument("-c", "--capture", type=str,
-                    help="save the frames with face in the CAPTURE directory")
+    # ap.add_argument("inputfile",
+    #                 help="video file to detect or '0' to detect from web cam")
+    # ap.add_argument("-t", "--threshold", default=0.44, type=float,
+    #                 help="threshold of the similarity (default=0.44)")
+    # ap.add_argument("-S", "--seconds", default=1, type=float,
+    #                 help="seconds between capture")
+    # ap.add_argument("-s", "--stop", default=0, type=int,
+    #                 help="stop detecting after # seconds")
+    # ap.add_argument("-k", "--skip", default=0, type=int,
+    #                 help="skip detecting for # seconds from the start")
+    # ap.add_argument("-d", "--display", action='store_true',
+    #                 help="display the frame in real time")
+    # ap.add_argument("-c", "--capture", type=str,
+    #                 help="save the frames with face in the CAPTURE directory")
     ap.add_argument("-r", "--resize-ratio", default=1.0, type=str,
                     help="resize the frame to process (less time, less accuracy)")
     args = ap.parse_args()
 
-    base_path = "C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier/"
+    # base_path = "/home/ubuntu/s03p31b107/face_classifier/"
 
-    src_file = args.inputfile
-    if src_file == "0":
-        src_file = 0
+    # src_file = args.inputfile
+    # if src_file == "0":
+    #     src_file = 0
 
-    src = cv2.VideoCapture(src_file, cv2.CAP_DSHOW)
-    if not src.isOpened():
-        exit(1)
+    # src = cv2.VideoCapture(src_file, cv2.CAP_DSHOW)
+    # if not src.isOpened():
+    #     exit(1)
 
-    frame_width = src.get(cv2.CAP_PROP_FRAME_WIDTH)
-    frame_height = src.get(cv2.CAP_PROP_FRAME_HEIGHT)
-    frame_rate = src.get(5)
-    frames_between_capture = int(round(frame_rate * args.seconds))
+    # frame_width = src.get(cv2.CAP_PROP_FRAME_WIDTH)
+    # frame_height = src.get(cv2.CAP_PROP_FRAME_HEIGHT)
+    # frame_rate = src.get(5)
+   
+    # frames_between_capture = int(round(frame_rate * args.seconds))
 
     ratio = float(args.resize_ratio)
     if ratio != 1.0:
         s = "RESIZE_RATIO: " + args.resize_ratio
         s += " -> %dx%d" % (int(src.get(3) * ratio), int(src.get(4) * ratio))
-
-    num_capture = 0
-    if args.capture:
-        if not os.path.isdir("C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier/train/" + args.capture):
-            os.mkdir("C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier/train/" + args.capture)
+ 
+    # num_capture = 0
+    # if args.capture:
+    #     if not os.path.isdir(base_path +"train/" + args.capture):
+    #         os.mkdir(base_path+"train/" + args.capture)
 
 
 
@@ -138,6 +139,7 @@ if __name__ == '__main__':
     def signal_handler(sig, frame):
         global running
         running = False
+
     prev_handler = signal.signal(signal.SIGINT, signal_handler)
 
     fc = FaceClassifier(args.threshold, ratio)
@@ -152,10 +154,10 @@ if __name__ == '__main__':
             break
 
         frame_id += 1
-        if frame_id % frames_between_capture != 0:
-            continue
+        # if 10 % 5 != 0:
+        #     continue
 
-        seconds = round(frame_id / frame_rate, 3)
+        seconds = round(5 / 5, 3)
         if args.stop > 0 and seconds > args.stop:
             break
         if seconds < args.skip:

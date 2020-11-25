@@ -75,10 +75,10 @@ def train(train_dir, verbose=False):
     """
     # X = []
     # y = []
-    X = loadtxt('C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier/output2.csv',
+    X = loadtxt("/home/ubuntu/s03p31b107/face_classifier/output2.csv",
                 delimiter=',').tolist()
     y = loadtxt(
-        'C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier/output3.csv', dtype=str).tolist()
+        "/home/ubuntu/s03p31b107/face_classifier/output3.csv", dtype=str).tolist()
 
     # Loop through each person in the training set
     for class_dir in os.listdir(train_dir):
@@ -115,7 +115,7 @@ def train(train_dir, verbose=False):
 
     
     start_time = time.time()
-    model_path = "C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier/"
+    model_path = "/home/ubuntu/s03p31b107/face_classifier/"
 
     dump_dataset(X, y, os.path.join(model_path))
     X_train, x_test, Y_train, y_test = train_test_split(X, y, test_size=0.25)
@@ -182,7 +182,7 @@ def dump_model(classifier, params=None, path=None):
     """
     # print("dump_model | Dumping model ...")
 
-    model_path = "C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier/"
+    model_path = "/home/ubuntu/s03p31b107/face_classifier/"
     if path is None:
         if model_path is not None:
             if os.path.exists(model_path) and os.path.isdir(model_path):
@@ -283,7 +283,7 @@ def predictionss(X_img_path: str, detection_model: str, jitters: int, encoding_m
                                     For faces of unrecognized persons, the name 'unknown' will be returned.
     """
     classifier = MLPClassifier()
-    with open('C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier/model.pkl', 'rb') as f:
+    with open("/home/ubuntu/s03p31b107/face_classifier/model.pkl", 'rb') as f:
         clf_from_pickle = pickle.load(f)
 
     faces_encodings, X_face_locations = None, None
@@ -350,15 +350,15 @@ if __name__ == "__main__":
     # STEP 1: Train the KNN classifier and save it to disk
     # Once the model is trained and saved, you can skip this step next time.
 
-    classifier = train("C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier/train")
+    classifier = train("/home/ubuntu/s03p31b107/face_classifier/train")
 
     # STEP 2: Using the trained classifier, make predictions for unknown images
-    model_path = "C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier"
+    model_path = "/home/ubuntu/s03p31b107/face_classifier/"
 
     classifier_folder = os.path.join(model_path)
     classifier_file = os.path.join(classifier_folder, "config")
 
-    CONFIG_FILE = "C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier/config.json"
+    CONFIG_FILE = "/home/ubuntu/s03p31b107/face_classifier/config.json"
     with open(CONFIG_FILE) as f:
         CFG = json.load(f)
 
@@ -368,6 +368,6 @@ if __name__ == "__main__":
     # Use 68 or 5 points
     encoding_models = CFG["PyRecognizer"]["encoding_models"].lower()
 
-    full_path = "C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier/test/"
+    full_path = "/home/ubuntu/s03p31b107/face_classifier/test/"
     predictionssis = predictionss(
         full_path, detection_model, jitter, encoding_models, 45)

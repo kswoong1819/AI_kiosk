@@ -106,6 +106,7 @@ export default {
       show: true,
     };
   },
+  
   created(){
 
   },
@@ -113,12 +114,11 @@ export default {
     hideModal() {
       this.$refs["my-modal"].hide();
     },
-    onSubmit() { //updateMenu
+    onSubmit() { 
         let saveMenu = this.menuinfo
         axios
           .put(`${baseURL}/admin/updatemenu`, saveMenu)
           .then((res) => {
-            console.log(res);
           })
           .catch((err) => {
             console.log(err);

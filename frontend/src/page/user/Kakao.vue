@@ -6,6 +6,11 @@
     <div v-if="!isToken">
       <div class="btn" @click="kakaojoin">Login</div>
     </div>
+    <div v-if="isToken">
+      <router-link to="/user/Mypage">
+        <div class="btn">Purchase details</div>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -30,20 +35,18 @@ export default {
     islogin() {
       this.isToken = this.$cookies.isKey("Auth-Token");
     },
-    kakaoInfoUpdate: function (id) {
+    kakaoInfoUpdate: function(id) {
       this.$store.commit("kakaoIdUpdate", id);
     },
     kakaojoin() {
-      console.log(this.isToken);
       let x = this;
-      var a = 0;
       var kakaoToken = "";
       Kakao.Auth.login({
-        success: function (authObj) {
+        success: function(authObj) {
           Kakao.API.request({
             url: "/v2/user/me",
 
-            success: function (res) {
+            success: function(res) {
               x.kakao.uid = res.id;
               x.kakao.name = res.properties.nickname;
 
@@ -64,13 +67,13 @@ export default {
           });
         },
 
-        fail: function (error) {
+        fail: function(error) {
           alert(JSON.stringify(error));
         },
       });
     },
 
-    logout: function () {
+    logout: function() {
       this.$cookies.remove("Auth-Token");
       setTimeout(() => {
         this.$router.push("/").catch((err) => {
@@ -81,7 +84,7 @@ export default {
     },
   },
 
-  data: function () {
+  data: function() {
     return {
       kakao: {
         uid: "",

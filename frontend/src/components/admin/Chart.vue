@@ -5,15 +5,13 @@
 import axios from "axios";
 import constants from "@/lib/constants";
 import Chart from "chart.js";
-import planetChartData from "../../chart-data";
 
 const baseURL = constants.baseUrl;
-const ctx = document.getElementById('planet-chart')
+
 export default {
   name: "Chart",
   data() {
     return {
-      planetChartData: planetChartData,
       type: "line",
       data: {
         labels: [
@@ -31,49 +29,26 @@ export default {
           "12월",
         ],
         datasets: [
-        //   {
-        //     // one line graph
-        //     label: "월별 매출액",
-        //     data: [0, 0, 1, 2, 67, 62, 27, 14],
-        //     backgroundColor: [
-        //       "rgba(54,73,93,.5)", // Blue
-        //       "rgba(54,73,93,.5)",
-        //       "rgba(54,73,93,.5)",
-        //       "rgba(54,73,93,.5)",
-        //       "rgba(54,73,93,.5)",
-        //       "rgba(54,73,93,.5)",
-        //       "rgba(54,73,93,.5)",
-        //       "rgba(54,73,93,.5)",
-        //     ],
-        //     borderColor: [
-        //       "#36495d",
-        //       "#36495d",
-        //       "#36495d",
-        //       "#36495d",
-        //       "#36495d",
-        //       "#36495d",
-        //       "#36495d",
-        //       "#36495d",
-        //     ],
-        //     borderWidth: 3,
-        //   },
+          {
 
-          { // another line graph
-            label: '월별 매출액',
-            data: [900, 910,100, 6.7,100, 116.4, 50.7, 49.2],
-            backgroundColor: [
-              'rgba(71, 183,132,.5)', // Green
-            ],
-            borderColor: [
-              '#47b784',
-            ],
-            borderWidth: 3
-          }
+            label: "월별 매출액(천원)",
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            backgroundColor: ["rgba(71, 183,132,.5)"],
+            borderColor: ["#47b784"],
+            borderWidth: 3,
+          },
+          {
+            label: "월별 방문자 수",
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            backgroundColor: ["rgba(54,73,93,.5)"],
+            borderColor: ["#36495d"],
+            borderWidth: 3,
+          },
         ],
       },
       options: {
         responsive: true,
-        lineTension: 1,
+        lineTension: 2,
         scales: {
           yAxes: [
             {
@@ -87,34 +62,52 @@ export default {
       },
     };
   },
-  created(){
-    this.getMoneyInfo()
+  created() {
+    this.getMonthIncome();
+    this.getmonthvisitors();
   },
-   mounted(){
-    this.createChart('planet-chart', this.planetChartData);
+  mounted() {
+    setTimeout(() => {
+      this.createChart('planet-chart');
+    }, 500);
   },
-  methods:{
-    createChart(chartId, chartData) {
-    const ctx = document.getElementById(chartId);
-    
-    const myChart = new Chart(ctx, {
-      type: this.type,
-      data: this.data,
-      options: this.options,
-    });
-  },
-  getMoneyInfo(){
-    axios
-    .get(`${baseURL}/admin/chart`)
-    .then((res)=>{
-        console.log(res)
-    }).catch((err)=>{
-        console.log(err)
-    })
-},
-},
+  methods: {
+    createChart(chartId) {
+      const ctx = document.getElementById(chartId);
 
-}
+      const myChart = new Chart(ctx, {
+        type: this.type,
+        data: this.data,
+        options: this.options,
+      });
+    },
+    getMonthIncome() {
+      axios
+        .get(`${baseURL}/admin/getmonthincome`)
+        .then((res) => {
+          for (let i = 0; i < res.data.length; i++) {
+            this.data.datasets[0].data[res.data[i][0] - 1] =
+              res.data[i][1] * 0.001;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getmonthvisitors() {
+      axios
+        .get(`${baseURL}/admin/getmonthvisitors`)
+        .then((res) => {
+          for (let i = 0; i < res.data.length; i++) {
+            this.data.datasets[1].data[res.data[i][0] - 1] = res.data[i][1];
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
+};
 </script>
 <style scoped>
 </style>

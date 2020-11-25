@@ -1,34 +1,43 @@
-<template>
+﻿<template>
   <div class="container">
-    <div>
-      <!-- <b-button @click="getUserOrderList()"> 내가 주문한거</b-button> -->
-      <div>
-        <table class="table table-hover">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col" class="mx-auto">상품</th>
-              <th scope="col">이름</th>
-              <th scope="col">가격</th>
-              <th scope="col">주문 내역</th>
-            </tr>
-          </thead>
-          <tbody>
-              <tr v-for="(menu, i) in Mymenu" :key="i">
-                <th scope="row" style="padding-top:50px;">{{ i +1}}</th>
-                <td><b-img
-                  :src="menu.image"
-                  width="100%"
-                ></b-img></td>
-                <td style="padding-top:50px;">{{menu.name}}</td>
-                <td style="padding-top:50px;">{{menu.price}}원</td>
-                <td style="padding-top:50px;">{{menu.orderdate}}</td>
-              </tr>
-          </tbody>
-        </table>
+    <div class="mt-5 ml-5  col-9" style="float:left;">
+      <div
+        class="mb-5"
+        v-for="(menu, i) in Mymenu"
+        :key="i"
+        data-holder-rendered="true"
+      >
+        <div>
+          <button>
+            {{ i.substring(5, 7) }}월 {{ i.substring(8, 11) }}일
+            {{ i.substring(11, 13) }}시 {{ i.substring(14, 16) }}분
+          </button>
+          <div
+            v-for="(menuDetail, j) in Mymenu[i]"
+            :key="j"
+            id="collapse-1"
+            class="mt-2"
+          >
+            <b-card class="row">
+              {{ j + 1 }}
+              <div class="col-3">
+                <b-img class="" :src="menuDetail[3]" height="100px"></b-img>
+              </div>
+              <div class="col-5">{{ menuDetail[2] }}</div>
+              <div class="col-2">{{ menuDetail[4] }}</div>
+            </b-card>
+          </div>
+        </div>
       </div>
+     </div>
+
+    <div class="col-2" style="float:right;">
+      많이 구매한 상점 내역<br />
+
+      총액 :
     </div>
   </div>
+
 </template>
 
 <script>
@@ -51,7 +60,7 @@ export default {
         learningfile: "",
       },
       Mymenu: [],
-      MymenuDate:[],
+      MymenuDate: [],
     };
   },
   created() {
@@ -59,58 +68,57 @@ export default {
   },
   methods: {
     getUserInfo() {
-      // console.log("method - getUserInfo");
-
       const axiosConfig = {
         headers: {
           jwtToken: `${this.$cookies.get("Auth-Token")}`,
         },
       };
-      console.log(axiosConfig);
+
       axios
         .post(`${constants.baseUrl}/authuser`, "", axiosConfig)
         .then((res) => {
-          // console.log(res.data.uid);
           this.form = res.data;
-          this.getUserOrderList2();
+          this.getUserOrderList();
         })
         .catch((err) => console.log(err));
     },
     getUserOrderList() {
       axios
-        .get(baseURL + "/get/orderlist", {
+        .get(baseURL + "/mypage/searchorder", {
           params: { sid: 1, uid: this.form.uid },
         })
         .then((res) => {
           this.Mymenu = res.data.object;
 
-          for (let i = 0; i < this.Mymenu.length; i++) {
-            // var a = this.Mymenu.length-1-i;
-            const day = this.MymenuDate[i].orderdate;
-            this.Mymenu[i].orderdate = day;
-          
+          for (var i = 0; i < this.Mymenu.length; i++) {
+            const day = this.Mymenu[i][0];
+            this.Mymenu[i][0] = day;
           }
-          console.log(this.Mymenu);
-        })
-        .catch((err) => console.log(err.response));
-    },
-    getUserOrderList2() {
-      axios
-        .get(baseURL + "/get/orderlist2", {
-          params: { sid: 1, uid: this.form.uid },
-        })
-        .then((res) => {
-          this.MymenuDate = res.data.object;
-          this.getUserOrderList();
-          
+          var tmp = {};
+          for (let j = 0; j < this.Mymenu.length; j++) {
+            const aa = this.Mymenu[j][0];
+            if (aa in tmp) {
+              tmp[aa].push(this.Mymenu[j]);
+            } else {
+              tmp[aa] = [];
+              tmp[aa].push(this.Mymenu[j]);
+            }
+          }
+          this.Mymenu = tmp;
         })
         .catch((err) => console.log(err.response));
     },
   },
 };
 </script>
+
 <style scoped>
-td,th{
-  text-align: center;
+.row > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.row {
+  font-size: 20px;
 }
 </style>

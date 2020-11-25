@@ -7,14 +7,12 @@ import lombok.ToString;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 @Valid
 @ToString
 @Data
-
 public class SignupRequest {
-	@ApiModelProperty(required = true)
+    @ApiModelProperty(required = true)
     @NotNull
     int uid;
     @ApiModelProperty(required = true)
@@ -40,5 +38,4 @@ public class SignupRequest {
     @NotNull
     private String learningfile;
 
-    
 }

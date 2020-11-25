@@ -21,16 +21,23 @@ export default {
         ADMIN: {
             DASHBOARD: 'dashboard',
             MENULIST: 'menulist',
-            UPDATEMENU: 'updatemenu',
             VISITHISTORY: 'visithistory',
-            ADDMENU: 'addmenu',
+            PURCHASEHISTORY:'purchasehistory'
+            // UPDATEMENU: 'updatemenu',
+            // ADDMENU: 'addmenu',
         },
 
         POST: {
             MAIN: "main",
             LIST: "list",
             KIOSKMAIN: "kisokmain",
+            KIOSKSTART: "kioskstart",
+            FACECHECK: "facecheck",
+            QRCHECK: "qrcheck",
         },
+        ERROR:{
+            FORBIDDEN: 'forbidden',
+        }
     }
 }
 

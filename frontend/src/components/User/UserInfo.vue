@@ -1,13 +1,9 @@
 <template>
   <div class="container">
-    <!-- <h1 style="text-align: center">회원 정보</h1> -->
-        <h1 class="border-bottom border-secondary" style="text-align: center">
+    <h1 class="border-bottom border-secondary" style="text-align: center">
       <strong>MY PAGE</strong>
     </h1>
     <br />
-    <!-- <span>이메일 : {{form.email}}</span><br />
-    <span>이름 : {{form.name}}</span><br />
-    <span>성별 : {{form.gender}}</span><br /> -->
     <div>
       <table class="table table-bordered table-striped table-hover">
         <thead class="thead-dark">
@@ -71,23 +67,22 @@ export default {
     };
   },
   created() {
-    console.log("created - MyPage");
-    this.getUserInfo();
+    if (this.$cookies.get("Auth-Token") == null) {
+      this.$router.push("/");
+    } else {
+      this.getUserInfo();
+    }
   },
   methods: {
     getUserInfo() {
-      console.log("method - getUserInfo");
-
       const axiosConfig = {
         headers: {
           jwtToken: `${this.$cookies.get("Auth-Token")}`,
         },
       };
-      console.log(axiosConfig);
       axios
         .post(`${constants.baseUrl}/authuser`, "", axiosConfig)
         .then((res) => {
-          console.log(res.data.uid);
           this.form = res.data;
         })
         .catch((err) => console.log(err));
@@ -96,7 +91,4 @@ export default {
 };
 </script>
 <style scoped>
-/* .container {
-  background-color: whitesmoke;
-} */
 </style>

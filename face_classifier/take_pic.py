@@ -75,7 +75,7 @@ class FaceClassifier():
             aligned_image = face_alignment_dlib.get_aligned_face(self.predictor, face_image)
 
             filename = now.strftime('%Y%m%d_%H%M%S.%f')[:-3] + '.png'
-            pathname = os.path.join("C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier/test/" , filename)
+            pathname = os.path.join("/home/ubuntu/learningFile/test/" , filename)
             tmp += 1
             cv2.imwrite(pathname, aligned_image)
         return faces
@@ -105,7 +105,7 @@ if __name__ == '__main__':
                     help="resize the frame to process (less time, less accuracy)")
     args = ap.parse_args()
 
-    base_path = "C:/Users/multicampus/Desktop/project3/s03p31b107/face_classifier/"
+    base_path = "/home/ubuntu/Jenkins/workspace/alonso/face_classifier/"
 
     src_file = args.inputfile
     if src_file == "0":

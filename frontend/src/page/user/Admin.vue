@@ -1,57 +1,91 @@
-<!--<template>
-    <div>
-    <b-button v-b-toggle.sidebar-no-header>Toggle Sidebar</b-button>
-    <b-sidebar id="sidebar-no-header" aria-labelledby="sidebar-no-header-title" no-header shadow>
-      <template #default="{ hide }">
-        <div class="p-3">
-          <h4 id="sidebar-no-header-title">관리자 페이지</h4>
-          <p>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-            in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-          </p>
-          <nav class="mb-3">
-            <b-nav vertical>
-              <b-nav-item active @click="hide">Active</b-nav-item>
-              <b-nav-item href="#link-1" @click="hide">Link</b-nav-item>
-              <b-nav-item href="#link-2" @click="hide">Another Link</b-nav-item>
-            </b-nav>
-          </nav>
-          <b-button variant="primary" block @click="hide">Close Sidebar</b-button>
-        </div>
-      </template>
-    </b-sidebar>
-  </div>
-</template> -->
+
 <template>
-  <!-- Default form login -->
   <div class="container">
-  <form>
-    <p class="h4 text-center mb-4">Sign in</p>
-    <label for="defaultFormLoginEmailEx" class="grey-text">Your email</label>
-    <input type="email" id="defaultFormLoginEmailEx" class="form-control"/>
-    <br/>
-    <label for="defaultFormLoginPasswordEx" class="grey-text">Your password</label>
-    <input type="password" id="defaultFormLoginPasswordEx" class="form-control"/>
+    <p class="h1 text-center mb-4">관리자 로그인</p>
+    <label for="defaultFormLoginEmailEx" class="grey-text"
+      ><h3>관리자 아이디 :</h3></label
+    >
+    <input
+      @keyup.enter="onSubmit"
+      type="text"
+      v-model="loginForm.aid"
+      id="defaultFormLoginEmailEx"
+      class="form-control"
+    />
+    <br />
+    <label for="defaultFormLoginPasswordEx" class="grey-text"
+      ><h3>관리자 비밀번호 :</h3></label
+    >
+    <input
+      @keyup.enter="onSubmit"
+      type="password"
+      v-model="loginForm.password"
+      id="defaultFormLoginPasswordEx"
+      class="form-control"
+    />
+
     <div class="text-center mt-4">
-      <button class="btn btn-dark" type="submit">Login</button>
+      <button
+        class="btn btn-dark btn-lg btn-block"
+        @click="onSubmit"
+        type="button"
+      >
+        Login
+      </button>
     </div>
-  </form>
   </div>
-  <!-- Default form login -->
 </template>
 
 
 <script>
+import axios from "axios";
+import constants from "@/lib/constants";
+
+const baseURL = constants.baseUrl;
+
 export default {
   name: "Admin",
+  data() {
+    return {
+      loginForm: {
+        aid: "",
+        password: "",
+      },
+    };
+  },
+  methods: {
+    onSubmit() {
+      if (this.aid == "") {
+        alert("아이디를 입력해주세요.");
+      } else if (this.password == "") {
+        alert("비밀번호를 입력해주세요.");
+      } else {
+        axios
+          .post(`${baseURL}/admin/login`, this.loginForm)
+          .then((res) => {
+            if (res.data != "") {
+              let jwtToken = res.data;
+              this.$cookies.set("Admin-Auth-Token", jwtToken);
+              // console.log(jwtToken)
+              this.$router.push({ name: "dashboard" });
+            } else {
+              alert("존재하지 않는 계정이거나 비밀번호가 틀렸습니다.");
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          });
+      }
+    },
+  },
 };
 </script>
 <style scoped>
-.container{
+.container {
   background-color: white;
-  width:700px;
-  margin:100px auto;
+  width: 1000px;
+  margin: 100px auto;
   border: solid 1px black;
-  padding: 40px;
+  padding: 60px 200px;
 }
 </style>

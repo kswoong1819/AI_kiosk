@@ -1,7 +1,7 @@
 <template>
   <div class="user mt-5" id="join">
     <div class="container">
-      <h4 style="text-align: center">회원가입</h4>
+      <h1 style="text-align: center">회원 가입</h1>
 
       <!-- 이름 -->
       <b-form-group
@@ -87,7 +87,10 @@
           v-model="age"
           type="number"
           required
-          placeholder="Enter age"
+          placeholder="10"
+          min="10"
+          max="100"
+          step="10"
         ></b-form-input>
       </b-form-group>
 
@@ -112,38 +115,45 @@
       </b-form-group>
 
       <!-- 파일 -->
+
       <b-form-group
         id="input-group-6"
-        label="Images"
+        label="Picture"
         label-size="lg"
         label-for="input-6"
+        style="text-align :center"
       >
-        <b-input-group size="lg">
-          <b-input-group-prepend is-text>
-            <b-icon icon="images"></b-icon>
-          </b-input-group-prepend>
-          <b-form-input
-            id="input-6"
-            v-model="learningfile"
-            required
-            placeholder="Enter images"
-          ></b-form-input>
-        </b-input-group>
+        <video
+          id="video"
+          class="ml-4"
+          width="480"
+          height="360"
+          autoplay
+        ></video>
+        <canvas id="canvas" width="480" height="360" style="display: none;">
+        </canvas>
+        <b-btn class="btn btn-default btn-lg" @click="snap">영상촬영</b-btn>
       </b-form-group>
 
       <b-row>
-        <b-col lg="4" class="pb-2"></b-col>
-        <b-col lg="4" class="pb-2"
-          ><b-button
+        <b-col lg="4" class="pb-2"> </b-col>
+        <b-col lg="4" class="pb-2" >
+          <b-button 
             type="submit"
             variant="success"
             block
+           
             :disabled="!(emailState && nameState)"
             @click="sendSignupFrom()"
             >가입하기</b-button
+          > 
+          </b-col
+        >
+        <b-col lg="4" class="pb-2">
+          <b-button type="submit" variant="danger" @click="home()"
+            >뒤로가기</b-button
           ></b-col
         >
-        <b-col lg="4" class="pb-2"></b-col>
       </b-row>
     </div>
   </div>
@@ -153,6 +163,9 @@
 import axios from "axios";
 import constants from "../../lib/constants";
 import { mapGetters } from "vuex";
+import Swal from "sweetalert2";
+
+const baseURL = constants.baseUrl;
 
 export default {
   components: {},
@@ -164,7 +177,7 @@ export default {
       return regExp.test(this.email);
     },
     nameState() {
-      return this.name.length > 2 ? true : false;
+      return this.name.length >= 2 ? true : false;
     },
     invalidName() {
       if (this.name.length > 0) {
@@ -193,12 +206,88 @@ export default {
           kakaoToken = Response.data;
           console.log(Response.data);
           this.$cookies.set("Auth-Token", kakaoToken);
-          this.$router.push("/");
+          axios
+            .get(baseURL + "/account/justlearn")
+            .then(() => {
+              this.$router.push("/");
+            })
+            .catch((Error) => {
+              console.log(Error);
+            });
         })
         .catch((Error) => {
           console.log(Error);
         });
     },
+
+    start() {
+      var video = document.getElementById("video");
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then(function(stream) {
+            video.srcObject = stream;
+            video.play();
+          });
+      }
+    },
+    home() {
+      this.$router.push("/");
+    },
+    tmp(cnt) {
+      var canvas = document.getElementById("canvas");
+      var context = canvas.getContext("2d");
+      context.drawImage(video, 0, 0, 480, 360);
+      var dataURL = canvas.toDataURL();
+
+      this.imagebase64.push(dataURL);
+      setTimeout(() => {
+        if (cnt == this.howmany - 1) {
+    
+          console.log(this.imagebase64);
+          axios
+            .post(baseURL + "/imageset", this.imagebase64)
+            .then((response) => {
+              this.imagebase64 = [];
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      }, 500);
+    },
+
+    snap() {
+            const Toast = Swal.mixin({
+              toast: true,
+              width: 500,
+           
+              position: 'top',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+              }
+            })
+
+            Toast.fire({
+              icon: 'success',
+              title: '촬영 중입니다'
+            })
+      this.imagebase64.push(this.getKakaoId.toString());
+
+      for (let i = 0; i < this.howmany; i++) {
+        this.tmp(i);
+      }
+       setTimeout(() => {
+
+      }, 2000);
+    },
+  },
+  mounted() {
+    this.start();
   },
   watch: {},
   data: () => {
@@ -211,6 +300,9 @@ export default {
       tel: "",
       learningfile: "",
       // isTerm: false,
+
+      imagebase64: [],
+      howmany: 20,
     };
   },
 };
@@ -218,10 +310,10 @@ export default {
 
 <style scoped>
 h1 {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 .container {
-  background-color: #faebd7;
+  background-color: white;
   /* padding: 0 30px 0 30px; */
 }
 

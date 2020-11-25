@@ -69,9 +69,7 @@ PW : test1234
 
 ### 2. 객체탐지 :eyes:
 
-<img src="https://lab.ssafy.com/s03-final/s03p31b107/raw/master/README.img/%EC%9B%80%EC%A7%81%EC%9E%84.gif" width="50%" height="50%">
-
-
+<img src="README.assets/움직임.gif" alt="움직임" style="zoom: 50%;" />
 
 <img src = "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQc27qUvAtzOlHVcvO_s8vMCDVK0MYFFQqRUw&usqp=CAU"> 
 
@@ -101,28 +99,28 @@ PW : test1234
 # 구조도 🔧 
 
 ### 흐름도
-<img src="https://lab.ssafy.com/s03-final/s03p31b107/raw/master/README.img/%ED%9D%90%EB%A6%84%EB%8F%84.png" width="50%" height="50%">
+<img src="README.assets/흐름도-1606296264382.png" alt="흐름도" style="zoom:50%;" />
 
 ### ERD
 [ERD Diagram](https://www.erdcloud.com/d/gaP6MY5NPWYAGpX7J)
 
-<img src="https://lab.ssafy.com/s03-final/s03p31b107/raw/master/README.img/ERD.JPG" width="50%" height="50%">
+<img src="README.assets/ERD.JPG" alt="ERD" style="zoom:50%;" />
 
 
 ### 기술 스택
 
 <br>
 
-<img src="https://lab.ssafy.com/s03-final/s03p31b107/raw/master/README.img/%EA%B8%B0%EC%88%A0%20%EC%8A%A4%ED%83%9D.JPG" width="50%" height="50%">
+<img src="README.assets/기술 스택.JPG" alt="기술 스택" style="zoom:50%;" />
 
 
 <br>
 
 ### Web Architecture / Embedded System
 
-<img src= "https://lab.ssafy.com/s03-final/s03p31b107/raw/master/README.img/Web%20Architecture.JPG" width="40%" height="40%">
+<img src="README.assets/Web Architecture.JPG" alt="Web Architecture" style="zoom: 40%;" />
 
-<img src="https://lab.ssafy.com/s03-final/s03p31b107/raw/master/README.img/Embedded%20System.JPG" width="40%" height="40%">
+<img src="README.assets/Embedded System.JPG" alt="Embedded System" style="zoom:47%;" />
 
 <br>
 <hr>
@@ -131,12 +129,12 @@ PW : test1234
 
 ## 팀소개 :runner: :walking: 
 
-|  Name  |             Role             |
-| :----: | :--------------------------: |
-| 박재림 |   팀장 / 백엔드 / 얼굴인식   |
-| 김성웅 |      백엔드 / 객체 탐지      |
-| 박수철 |    백엔드 / 서버 / 디버깅    |
-| 이동현 | 프론트엔드 / 서버 / 키오스크 |
-| 이진용 | 프론트엔드 / API / 회원관리  |
+|  Name  |                 Role                 |
+| :----: | :----------------------------------: |
+| 박재림 |       팀장 / 백엔드 / 얼굴인식       |
+| 김성웅 | 백엔드 / 객체 탐지 / Jetson 임베디드 |
+| 박수철 |        백엔드 / 서버 / 디버깅        |
+| 이동현 |     프론트엔드 / 서버 / 키오스크     |
+| 이진용 |     프론트엔드 / API / 회원관리      |
 
 <br>
